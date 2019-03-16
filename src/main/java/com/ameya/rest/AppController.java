@@ -23,15 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ameya.model.Message;
 import com.ameya.model.MessageDTO;
 import com.ameya.model.MessageRepository;
+import com.ameya.service.IMessageService;
 
 @RestController
 public class AppController {
 
 	@Autowired
-	MessageRepository repository;
-
-	@Autowired
-	ModelMapper modelMapper;
+	IMessageService service;
 
 	@RequestMapping("/")
 	private ResponseEntity<String> index() {
@@ -41,10 +39,8 @@ public class AppController {
 	@RequestMapping(value = "/send", method = RequestMethod.POST)
 	private ResponseEntity<Object> send(@RequestBody MessageDTO messageDTO) {
 
-		Message message = convertToEntity(messageDTO);
-		Message persistedMsg = repository.save(message);
-		MessageDTO messageDto = convertToDto(persistedMsg);
-		return new ResponseEntity<Object>(messageDto, HttpStatus.CREATED);
+		MessageDTO savedMessageDto = service.sendMessages(messageDTO);
+		return new ResponseEntity<Object>(savedMessageDto, HttpStatus.CREATED);
 	}
 
 	@RequestMapping("/receiveMsgs")
@@ -53,26 +49,22 @@ public class AppController {
 		String recepient = request.getParameter("recepient");
 
 		if (!StringUtils.isEmpty(recepient)) {
-			List<Message> receivedMsgs = repository.getMessageByRecepient(recepient);
-			List<MessageDTO> receivedMsgDto = receivedMsgs.stream().map(msg -> convertToDto(msg))
-					.collect(Collectors.toList());
-			
+			List<MessageDTO> receivedMsgDto = service.getMessageByRecepient(recepient);
 			return new ResponseEntity<Object>(receivedMsgDto, HttpStatus.FOUND);
 		}
 
 		return new ResponseEntity<Object>("No recepient passed", HttpStatus.BAD_REQUEST);
 
 	}
-	
+
 	@RequestMapping("/sentMsgs")
 	private ResponseEntity<Object> sent(HttpServletRequest request) // Using HttpServletReq
 	{
 		String sender = request.getParameter("sender");
 
 		if (!StringUtils.isEmpty(sender)) {
-			List<Message> sentMsgs = repository.getMessageBySender(sender);
-			List<MessageDTO> sentMsgDto = sentMsgs.stream().map(msg -> convertToDto(msg))
-					.collect(Collectors.toList());
+			
+			List<MessageDTO> sentMsgDto = service.getMessageBySender(sender);
 			return new ResponseEntity<Object>(sentMsgDto, HttpStatus.FOUND);
 		}
 
@@ -80,16 +72,4 @@ public class AppController {
 
 	}
 
-	private Message convertToEntity(MessageDTO messageDto) {
-
-		Message message = modelMapper.map(messageDto, Message.class);
-		message.setTimeStamp(new Timestamp(System.currentTimeMillis()));
-		return message;
-	}
-
-	private MessageDTO convertToDto(Message message) {
-
-		MessageDTO messageDto = modelMapper.map(message, MessageDTO.class);
-		return messageDto;
-	}
 }
