@@ -29,12 +29,4 @@ public class MyApp {
 	{
 		return new ModelMapper();
 	}
-	
-	@Bean
-	CommandLineRunner commandLineRunner(MessageRepository rep)
-	{
-		return (args) -> {
-			System.out.println("Inside CLR");
-		};
-	}
 }
