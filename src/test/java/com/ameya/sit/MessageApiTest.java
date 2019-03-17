@@ -61,10 +61,15 @@ public class MessageApiTest {
 	@Test
 	public void testSendMessage() throws Exception {
 		Message msg = new Message("Ameya", "Suraj", "hello World", new Timestamp(System.currentTimeMillis()));
-		mvc.perform(post("/send").contentType("application/json").content(JsonUtil.toJson(msg)));
-
-		List<Message> msgs = (List<Message>) repository.findAll();
-		assertThat(msgs).extracting(Message::getSender).contains("Ameya");
+		MvcResult result=mvc.perform(post("/send")
+				.contentType("application/json")
+				.content(JsonUtil.toJson(msg)))
+				.andExpect(status().isCreated())
+				.andReturn();
+		
+		String output = result.getResponse().getContentAsString();
+		
+		assertTrue(output.contains("hello World"));
 
 	}
 
