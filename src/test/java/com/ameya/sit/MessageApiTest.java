@@ -35,18 +35,6 @@ import com.ameya.starter.MyApp;
 // @AutoConfigureTestDatabase
 public class MessageApiTest {
 
-	// @org.springframework.boot.test.context.TestConfiguration
-	// static class TestConfiguration{
-	// public IMessageService messageService() {
-	// return new MessageService();
-	// }
-	//
-	// ModelMapper modelmapper()
-	// {
-	// return new ModelMapper();
-	// }
-	// }
-
 	@Autowired
 	MessageRepository repository;
 
@@ -61,7 +49,7 @@ public class MessageApiTest {
 	@Test
 	public void testSendMessage() throws Exception {
 		Message msg = new Message("Ameya", "Suraj", "hello World", new Timestamp(System.currentTimeMillis()));
-		MvcResult result=mvc.perform(post("/send")
+		MvcResult result=mvc.perform(post("/messaging/send")
 				.contentType("application/json")
 				.content(JsonUtil.toJson(msg)))
 				.andExpect(status().isCreated())
@@ -82,7 +70,7 @@ public class MessageApiTest {
 		
 		createSampleMessage(sender, recepient, message);
 
-		MvcResult result=mvc.perform(get("/receiveMsgs")
+		MvcResult result=mvc.perform(get("/messaging/receiveMsgs")
 				.contentType("application/json")
 				.param("recepient", recepient))
 				.andExpect(status().isFound())
@@ -101,7 +89,7 @@ public class MessageApiTest {
 		
 		createSampleMessage(sender, recepient, message);
 
-		MvcResult result=mvc.perform(get("/sentMsgs")
+		MvcResult result=mvc.perform(get("/messaging/sentMsgs")
 				.contentType("application/json")
 				.param("sender", sender))
 				.andExpect(status().isFound())

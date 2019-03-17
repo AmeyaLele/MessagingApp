@@ -31,7 +31,7 @@ public class RequestTest {
 	public void testDefaultMessage() throws Exception
 	{
 		//System.out.println("Hitting random port -"+port);
-		assertThat(mock.perform(get("/"))
+		assertThat(mock.perform(get("/messaging/home"))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().string("Welcome to Spring Boot enabled messaging!!")));

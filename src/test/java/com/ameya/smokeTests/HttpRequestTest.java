@@ -27,7 +27,7 @@ public class HttpRequestTest {
 	public void testDefaultMessage()
 	{
 		System.out.println("Hitting random port -"+port);
-		assertThat(restTemplate.getForObject("http://localhost:"+port, String.class))
+		assertThat(restTemplate.getForObject("http://localhost:"+port+"/messaging/home", String.class))
 		.contains("Welcome to Spring Boot enabled messaging!!");
 	}
 	
