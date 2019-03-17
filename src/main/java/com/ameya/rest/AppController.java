@@ -25,25 +25,25 @@ import com.ameya.model.MessageDTO;
 import com.ameya.model.MessageRepository;
 import com.ameya.service.IMessageService;
 
-@RestController
+@RestController("/messaging")
 public class AppController {
 
 	@Autowired
 	IMessageService service;
 
-	@RequestMapping("/")
+	@RequestMapping("/messaging/home")
 	private ResponseEntity<String> index() {
 		return new ResponseEntity<String>("Welcome to Spring Boot enabled messaging!!", HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/send", method = RequestMethod.POST)
+	@RequestMapping(value = "/messaging/send", method = RequestMethod.POST)
 	private ResponseEntity<Object> send(@RequestBody MessageDTO messageDTO) {
 
 		MessageDTO savedMessageDto = service.sendMessages(messageDTO);
 		return new ResponseEntity<Object>(savedMessageDto, HttpStatus.CREATED);
 	}
 
-	@RequestMapping("/receiveMsgs")
+	@RequestMapping("/messaging/receiveMsgs")
 	private ResponseEntity<Object> receive(HttpServletRequest request) // Using HttpServletReq
 	{
 		String recepient = request.getParameter("recepient");
@@ -57,7 +57,7 @@ public class AppController {
 
 	}
 
-	@RequestMapping("/sentMsgs")
+	@RequestMapping("/messaging/sentMsgs")
 	private ResponseEntity<Object> sent(HttpServletRequest request) // Using HttpServletReq
 	{
 		String sender = request.getParameter("sender");
