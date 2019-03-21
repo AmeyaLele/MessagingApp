@@ -1,6 +1,8 @@
 package com.ameya.model;
 
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class Message {
 	private String recepient;
 	private String message;
 	private Timestamp dom;
+	private Date date;
 
 	public Message() {
 		super();
@@ -70,6 +73,14 @@ public class Message {
 
 	public void setTimeStamp(Timestamp timeStamp) {
 		this.dom = timeStamp;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	@Override

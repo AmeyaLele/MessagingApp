@@ -1,5 +1,6 @@
 package com.ameya.service;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,6 +55,7 @@ public class MessageService implements IMessageService {
 
 		Message message = modelMapper.map(messageDto, Message.class);
 		message.setTimeStamp(new Timestamp(System.currentTimeMillis()));
+		message.setDate(new java.util.Date());
 		return message;
 	}
 
@@ -61,6 +63,16 @@ public class MessageService implements IMessageService {
 
 		MessageDTO messageDto = modelMapper.map(message, MessageDTO.class);
 		return messageDto;
+	}
+
+	@Override
+	public List<MessageDTO> getMessageByDateAndRecepient(java.util.Date date, String recepient) {
+		
+		List<Message> receivedMsgs = repository.getMessageByDateAndRecepient(date, recepient);
+		List<MessageDTO> receivedMsgsTo=receivedMsgs.stream().map(msg -> convertToDto(msg))
+		.collect(Collectors.toList());
+		
+		return receivedMsgsTo;
 	}
 
 	

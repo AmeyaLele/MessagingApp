@@ -1,5 +1,6 @@
 package com.ameya.model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class MessageDTO {
@@ -9,6 +10,7 @@ public class MessageDTO {
 	private String recepient;
 	private String message;
 	private Timestamp dom;
+	private Date date;
 
 	public String getSender() {
 		return sender;
@@ -44,6 +46,14 @@ public class MessageDTO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.ameya.model;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
@@ -25,4 +26,7 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
 	 * @return
 	 */
 	List<Message> getMessageBySender(String sender);
+	
+	
+	List<Message> getMessageByDateAndRecepient(Date date, String recepient);
 }
